@@ -3,38 +3,34 @@ import 'package:get/get.dart';
 
 import '../controllers/PaymentController.dart';
 import '../models/ItemModel.dart';
+// import 'PaymentPage.dart';
 
 class ItemScreen extends StatelessWidget {
   // A sample list of items to display
   final List<ItemModel> items = [
     ItemModel(
       id: 1,
-      name: 'Item 1',
-      imageUrl: 'assets/images/item.jpeg',
+      name: 'Frontend developer needed',
       price: 100.0,
     ),
     ItemModel(
       id: 2,
-      name: 'Item 2',
-      imageUrl: 'assets/images/item.jpeg',
+      name: 'Need someone to do my C# coursework',
       price: 200.0,
     ),
     ItemModel(
       id: 3,
-      name: 'Item 3',
-      imageUrl: 'assets/images/item.jpeg',
+      name: 'API integrate gardini manche chaiyo',
       price: 300.0,
     ),
     ItemModel(
       id: 4,
-      name: 'Item 4',
-      imageUrl: 'assets/images/item.jpeg',
+      name: 'UI design gardeu na kasaile',
       price: 400.0,
     ),
     ItemModel(
       id: 5,
-      name: 'Item 5',
-      imageUrl: 'assets/images/item.jpeg',
+      name: 'Help me do the backend',
       price: 500.0,
     ),
   ];
@@ -45,32 +41,38 @@ class ItemScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Items for Sale'),
+        title: Text('Ongoing/Accepted Jobs'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
+      body: Column(
+        children: [
+          Expanded(  // ✅ Wrap GridView.builder with Expanded
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GridView.builder(
+                shrinkWrap: true,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                ),
+                itemCount: items.length,
+                itemBuilder: (ctx, index) {
+                  final item = items[index];
+                  return ItemCard(item: item, paymentController: paymentController);
+                },
+              ),
+            ),
           ),
-          itemCount: items.length,
-          itemBuilder: (ctx, index) {
-            final item = items[index];
-            return ItemCard(item: item, paymentController: paymentController);
-          },
-        ),
+          SizedBox(height: 10), // Add spacing
+        ],
       ),
     );
   }
 }
+
 class ItemCard extends StatelessWidget {
   final ItemModel item;
-
   final PaymentController paymentController;
-
-
 
   ItemCard({required this.item, required this.paymentController});
 
@@ -80,21 +82,12 @@ class ItemCard extends StatelessWidget {
       color: Colors.white,
       elevation: 5,
       child: Container(
-        // Removing the fixed height and let it fit based on the content
         padding: EdgeInsets.all(10), // Adding padding to prevent items from touching the edges
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            // Item Image
-            Image.asset(
-              item.imageUrl,
-              width: 50,  // Adjusted width
-              height: 50, // Adjusted height
-              fit: BoxFit.cover,
-            ),
-            SizedBox(height: 10),
-            // Item Name
+            SizedBox(height: Get.height * 0.025,),
             Text(
               item.name,
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -118,7 +111,7 @@ class ItemCard extends StatelessWidget {
                     await paymentController.buyItem(item.id, item.price);
                     // Handle the payment response as needed
                   },
-                  child: Text('Buy'),
+                  child: Text('Pay now'),
                 );
               }
             }),
